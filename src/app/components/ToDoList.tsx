@@ -6,21 +6,21 @@ import ToDoItem from "./ToDoItem";
 
 const TODOS: IToDoItem[] = [
   {
-    id: 1,
+    id: "1",
     title: "read a book",
-    isDone: true,
+    checked: true,
     priority: PrioritiesEnum.Low,
   },
   {
-    id: 2,
+    id: "2",
     title: "make an exercise",
-    isDone: false,
+    checked: false,
     priority: PrioritiesEnum.High,
   },
   {
-    id: 3,
+    id: "3",
     title: "rock it",
-    isDone: false,
+    checked: false,
     priority: PrioritiesEnum.Middle,
   },
 ];
@@ -28,12 +28,12 @@ const TODOS: IToDoItem[] = [
 const ToDoList = () => {
   const [todos, setTodos] = useState(TODOS);
 
-  const changeCallback = (id: number, checked: boolean) => {
-    const index = todos.findIndex((todo) => todo.id === +id);
+  const changeCallback = (id: string, checked: boolean) => {
+    const index = todos.findIndex((todo) => todo.id === id);
 
     const todo = {
       ...todos[index],
-      isDone: checked,
+      checked: checked,
     };
 
     const newTodos = [
@@ -45,7 +45,7 @@ const ToDoList = () => {
     setTodos(newTodos);
   };
 
-  const removeCallback = (id: number) => {
+  const removeCallback = (id: string) => {
     const newTodos = todos.filter((todo) => todo.id !== id);
 
     setTodos(newTodos);

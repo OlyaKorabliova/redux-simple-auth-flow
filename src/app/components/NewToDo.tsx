@@ -31,7 +31,7 @@ const NewToDo = ({ saveCallback }) => {
       saveCallback({
         id: 4,
         title,
-        isDone: false,
+        checked: false,
         priority,
       });
 
