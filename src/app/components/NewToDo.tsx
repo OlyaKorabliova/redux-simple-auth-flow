@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PrioritiesEnum } from "../enums/priorities.enum";
 import { IPriorityOption } from "../interfaces/priority-option.interface";
+import { removeError } from "../redux/todos/todos.actions";
+import { getError } from "../redux/todos/todos.selector";
 import "../styles/NewToDo.css";
 
 const PRIORITIES: IPriorityOption[] = [
@@ -19,11 +22,17 @@ const PRIORITIES: IPriorityOption[] = [
 ];
 
 const NewToDo = ({ saveCallback }) => {
+  const dispatch = useDispatch();
+  const error = useSelector(getError);
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState(PrioritiesEnum.Low);
 
   const onInputChange = ({ target: { value } }) => {
     setTitle(value);
+
+    if (error) {
+      dispatch(removeError());
+    }
   };
 
   const onAddClick = () => {

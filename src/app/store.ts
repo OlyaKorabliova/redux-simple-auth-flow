@@ -1,8 +1,10 @@
 import { applyMiddleware, createStore, compose } from "redux";
+import thunk from "redux-thunk";
+
 import rootReducer from "./root-reducer";
 
 export default function configureStore() {
-  let middleware = [];
+  let middleware = [thunk];
   const isDevelopmentMode = process.env.NODE_ENV === "development";
   if (isDevelopmentMode) {
     const logger = require("redux-logger").createLogger({ collapsed: true });

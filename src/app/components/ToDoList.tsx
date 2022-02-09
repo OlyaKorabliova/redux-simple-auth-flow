@@ -2,25 +2,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { IToDoItem } from "../interfaces/to-do-item.interface";
 import NewToDo from "./NewToDo";
 import ToDoItem from "./ToDoItem";
-import { getAllTodos } from "../redux/todos.selector";
+import { getAllTodos, getError } from "../redux/todos/todos.selector";
+import {
+  addTodo,
+  removeError,
+  removeTodo,
+  toggleTodo,
+} from "../redux/todos/todos.actions";
 
 const ToDoList = () => {
   const dispatch = useDispatch();
   const todos = useSelector((state) => getAllTodos(state));
+  const error = useSelector(getError);
 
   const changeCallback = (id: string, checked: boolean) => {
-    dispatch({
-      type: "TOGGLE_TODO",
-      id,
-      checked,
-    });
+    dispatch(toggleTodo(id, checked));
   };
 
   const removeCallback = (id: string) => {
-    dispatch({
-      type: "REMOVE_TODO",
-      id,
-    });
+    dispatch(removeTodo(id));
+    dispatch(removeError());
   };
 
   const renderTodoItem = (todo: IToDoItem) => {
@@ -35,16 +36,14 @@ const ToDoList = () => {
   };
 
   const onSaveNewTodo = (todo: IToDoItem) => {
-    dispatch({
-      type: "ADD_TODO",
-      todo,
-    });
+    dispatch(addTodo(todo));
   };
 
   return (
     <div>
       <NewToDo saveCallback={onSaveNewTodo} />
       {todos.map(renderTodoItem)}
+      {error ? <h3 style={{ color: "red" }}>{error}</h3> : null}
     </div>
   );
 };

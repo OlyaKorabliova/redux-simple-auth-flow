@@ -7,3 +7,5 @@ export const getTodoById = (state, id) => {
 
   return todo;
 };
+
+export const getError = (state) => state.todos.error;

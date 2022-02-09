@@ -1,5 +1,11 @@
 import uniqid from "uniqid";
 import { PrioritiesEnum } from "../enums/priorities.enum";
+import {
+  ADD_TODO,
+  REMOVE_ERROR,
+  REMOVE_TODO,
+  TOGGLE_TODO,
+} from "./actionTypes";
 
 const initialState = {
   items: [
@@ -22,11 +28,12 @@ const initialState = {
       priority: PrioritiesEnum.Middle,
     },
   ],
+  error: null,
 };
 
 const todosReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "TOGGLE_TODO": {
+    case TOGGLE_TODO: {
       const index = state.items.findIndex((todo) => todo.id === action.id);
 
       const todo = {
@@ -43,14 +50,14 @@ const todosReducer = (state = initialState, action) => {
         ],
       };
     }
-    case "REMOVE_TODO": {
+    case REMOVE_TODO: {
       const newTodos = state.items.filter((todo) => todo.id !== action.id);
       return {
         ...state,
         items: newTodos,
       };
     }
-    case "ADD_TODO": {
+    case ADD_TODO.SUCCESS: {
       const newTodo = {
         ...action.todo,
         checked: false,
@@ -60,6 +67,20 @@ const todosReducer = (state = initialState, action) => {
       return {
         ...state,
         items: [...state.items, newTodo],
+      };
+    }
+    case ADD_TODO.ERROR: {
+      const message = `Only ${action.limit} Todos allowed!`;
+
+      return {
+        ...state,
+        error: message,
+      };
+    }
+    case REMOVE_ERROR: {
+      return {
+        ...state,
+        error: null,
       };
     }
     default:
