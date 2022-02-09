@@ -1,20 +1,23 @@
+import { useSelector } from "react-redux";
 import { PrioritiesEnum } from "../enums/priorities.enum";
-import { IToDoItem } from "../interfaces/to-do-item.interface";
+import { getTodoById } from "../redux/todos.selector";
 import "../styles/ToDoItem.css";
 
 interface IToDoItemProps {
-  data: IToDoItem;
+  id: string;
   changeCallback: (id: string, checked: boolean) => void;
   removeCallback: (id: string) => void;
 }
 
-const ToDoItem = ({ data, changeCallback, removeCallback }: IToDoItemProps) => {
+const ToDoItem = ({ id, changeCallback, removeCallback }: IToDoItemProps) => {
+  const todo = useSelector((state) => getTodoById(state, id));
+
   const onChange = ({ target: { value, checked } }) => {
     changeCallback(value, checked);
   };
 
   const onRemove = () => {
-    removeCallback(data.id);
+    removeCallback(id);
   };
 
   return (
@@ -24,13 +27,13 @@ const ToDoItem = ({ data, changeCallback, removeCallback }: IToDoItemProps) => {
         <input
           type="checkbox"
           onChange={onChange}
-          value={data.id}
-          checked={data.checked}
+          value={id}
+          checked={todo.checked}
         />
         <div
-          className={`priority ${PrioritiesEnum[data.priority].toLowerCase()}`}
+          className={`priority ${PrioritiesEnum[todo.priority].toLowerCase()}`}
         />
-        {data.title}
+        {todo.title}
       </label>
     </div>
   );

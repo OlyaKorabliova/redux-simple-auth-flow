@@ -1,61 +1,33 @@
-import { useState } from "react";
-import { PrioritiesEnum } from "../enums/priorities.enum";
+import { useDispatch, useSelector } from "react-redux";
 import { IToDoItem } from "../interfaces/to-do-item.interface";
 import NewToDo from "./NewToDo";
 import ToDoItem from "./ToDoItem";
-
-const TODOS: IToDoItem[] = [
-  {
-    id: "1",
-    title: "read a book",
-    checked: true,
-    priority: PrioritiesEnum.Low,
-  },
-  {
-    id: "2",
-    title: "make an exercise",
-    checked: false,
-    priority: PrioritiesEnum.High,
-  },
-  {
-    id: "3",
-    title: "rock it",
-    checked: false,
-    priority: PrioritiesEnum.Middle,
-  },
-];
+import { getAllTodos } from "../redux/todos.selector";
 
 const ToDoList = () => {
-  const [todos, setTodos] = useState(TODOS);
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => getAllTodos(state));
 
   const changeCallback = (id: string, checked: boolean) => {
-    const index = todos.findIndex((todo) => todo.id === id);
-
-    const todo = {
-      ...todos[index],
-      checked: checked,
-    };
-
-    const newTodos = [
-      ...todos.slice(0, index),
-      todo,
-      ...todos.slice(index + 1),
-    ];
-
-    setTodos(newTodos);
+    dispatch({
+      type: "TOGGLE_TODO",
+      id,
+      checked,
+    });
   };
 
   const removeCallback = (id: string) => {
-    const newTodos = todos.filter((todo) => todo.id !== id);
-
-    setTodos(newTodos);
+    dispatch({
+      type: "REMOVE_TODO",
+      id,
+    });
   };
 
   const renderTodoItem = (todo: IToDoItem) => {
     return (
       <ToDoItem
         key={todo.id}
-        data={todo}
+        id={todo.id}
         changeCallback={changeCallback}
         removeCallback={removeCallback}
       />
@@ -63,7 +35,10 @@ const ToDoList = () => {
   };
 
   const onSaveNewTodo = (todo: IToDoItem) => {
-    setTodos([...todos, todo]);
+    dispatch({
+      type: "ADD_TODO",
+      todo,
+    });
   };
 
   return (

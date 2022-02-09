@@ -29,9 +29,7 @@ const NewToDo = ({ saveCallback }) => {
   const onAddClick = () => {
     if (title.length) {
       saveCallback({
-        id: 4,
         title,
-        checked: false,
         priority,
       });
 
