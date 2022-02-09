@@ -5,6 +5,7 @@ import {
   REMOVE_TODO,
   TOGGLE_TODO,
 } from "../actionTypes";
+import { createAction } from "../utils/createAction";
 
 const LIMIT = 3;
 
@@ -13,34 +14,21 @@ export function addTodo(todo: IToDoItem) {
     if (getState().todos.items.length >= LIMIT) {
       dispatch({
         type: ADD_TODO.ERROR,
-        limit: LIMIT,
+        payload: {
+          limit: LIMIT,
+        },
       });
     } else {
       dispatch({
         type: ADD_TODO.SUCCESS,
-        todo,
+        payload: {
+          todo,
+        },
       });
     }
   };
 }
 
-export function toggleTodo(id: string, checked: boolean) {
-  return {
-    type: TOGGLE_TODO,
-    id,
-    checked,
-  };
-}
-
-export function removeTodo(id: string) {
-  return {
-    type: REMOVE_TODO,
-    id,
-  };
-}
-
-export function removeError() {
-  return {
-    type: REMOVE_ERROR,
-  };
-}
+export const toggleTodo = createAction(TOGGLE_TODO, "id", "checked");
+export const removeTodo = createAction(REMOVE_TODO, "id");
+export const removeError = createAction(REMOVE_ERROR);

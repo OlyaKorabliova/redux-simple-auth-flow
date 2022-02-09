@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IToDoItem } from "../interfaces/to-do-item.interface";
 import NewToDo from "./NewToDo";
 import ToDoItem from "./ToDoItem";
+import ViewFilter from "./ViewFilter";
 import { getAllTodos, getError } from "../redux/todos/todos.selector";
 import {
   addTodo,
@@ -9,11 +10,13 @@ import {
   removeTodo,
   toggleTodo,
 } from "../redux/todos/todos.actions";
+import { isVisible } from "../redux/filters/filters.selector";
 
 const ToDoList = () => {
   const dispatch = useDispatch();
   const todos = useSelector((state) => getAllTodos(state));
   const error = useSelector(getError);
+  const isVisibleContent = useSelector(isVisible);
 
   const changeCallback = (id: string, checked: boolean) => {
     dispatch(toggleTodo(id, checked));
@@ -41,9 +44,14 @@ const ToDoList = () => {
 
   return (
     <div>
-      <NewToDo saveCallback={onSaveNewTodo} />
-      {todos.map(renderTodoItem)}
-      {error ? <h3 style={{ color: "red" }}>{error}</h3> : null}
+      <ViewFilter />
+      {isVisibleContent ? (
+        <>
+          <NewToDo saveCallback={onSaveNewTodo} />
+          {todos.map(renderTodoItem)}
+          {error ? <h3 style={{ color: "red" }}>{error}</h3> : null}
+        </>
+      ) : null}
     </div>
   );
 };

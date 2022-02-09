@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { PrioritiesEnum } from "../enums/priorities.enum";
-import { getTodoById } from "../redux/todos.selector";
+import { getTodoById } from "../redux/todos/todos.selector";
 import "../styles/ToDoItem.css";
 
 interface IToDoItemProps {
