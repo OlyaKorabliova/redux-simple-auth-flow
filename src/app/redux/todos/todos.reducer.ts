@@ -2,6 +2,7 @@ import uniqid from "uniqid";
 import { PrioritiesEnum } from "../../enums/priorities.enum";
 import {
   ADD_TODO,
+  GET_TODOS,
   REMOVE_ERROR,
   REMOVE_TODO,
   TOGGLE_TODO,
@@ -9,64 +10,52 @@ import {
 import { createReducer } from "../utils/createReducer";
 
 const initialState = {
-  items: [
-    {
-      id: "1",
-      title: "read a book",
-      checked: true,
-      priority: PrioritiesEnum.Low,
-    },
-    {
-      id: "2",
-      title: "make an exercise",
-      checked: false,
-      priority: PrioritiesEnum.High,
-    },
-    {
-      id: "3",
-      title: "rock it",
-      checked: false,
-      priority: PrioritiesEnum.Middle,
-    },
-  ],
+  items: [],
   error: null,
+  isLoading: false,
 };
 
 const todosReducer = createReducer(initialState, {
-  [TOGGLE_TODO]: (state, action) => {
-    const index = state.items.findIndex((todo) => todo.id === action.id);
-
-    const todo = {
-      ...state.items[index],
-      checked: action.checked,
+  [GET_TODOS.REQUEST]: (state) => {
+    return {
+      ...state,
+      isLoading: true,
     };
+  },
+  [GET_TODOS.SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      items: action.payload.data,
+      isLoading: false,
+    };
+  },
+  [TOGGLE_TODO.SUCCESS]: (state, action) => {
+    const { data } = action.payload;
+
+    const index = state.items.findIndex((todo) => todo.id === data.id);
 
     return {
       ...state,
       items: [
         ...state.items.slice(0, index),
-        todo,
+        data,
         ...state.items.slice(index + 1),
       ],
     };
   },
-  [REMOVE_TODO]: (state, action) => {
-    const newTodos = state.items.filter((todo) => todo.id !== action.id);
+  [REMOVE_TODO.SUCCESS]: (state, action) => {
+    const newTodos = state.items.filter(
+      (todo) => todo.id !== action.payload.id
+    );
     return {
       ...state,
       items: newTodos,
     };
   },
   [ADD_TODO.SUCCESS]: (state, action) => {
-    const newTodo = {
-      ...action.payload.todo,
-      checked: false,
-      id: uniqid(),
-    };
-
     return {
       ...state,
-      items: [...state.items, newTodo],
+      items: [...state.items, action.payload.data],
     };
   },
   [ADD_TODO.ERROR]: (state, action) => {

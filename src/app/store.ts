@@ -2,6 +2,7 @@ import { applyMiddleware, createStore, compose } from "redux";
 import thunk from "redux-thunk";
 
 import rootReducer from "./root-reducer";
+// import * as api from "./api";
 
 export default function configureStore() {
   let middleware = [thunk];

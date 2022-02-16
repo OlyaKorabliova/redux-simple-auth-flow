@@ -1,0 +1,28 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "read a book",
+      "checked": true,
+      "priority": 0
+    },
+    {
+      "id": "2",
+      "title": "make an exercise",
+      "checked": true,
+      "priority": 2
+    },
+    {
+      "id": "3",
+      "title": "rock it",
+      "checked": false,
+      "priority": 1
+    },
+    {
+      "title": "ader",
+      "priority": "1",
+      "checked": false,
+      "id": "BlHeuid"
+    }
+  ]
+}

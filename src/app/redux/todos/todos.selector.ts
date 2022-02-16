@@ -9,3 +9,5 @@ export const getTodoById = (state, id) => {
 };
 
 export const getError = (state) => state.todos.error;
+
+export const isTodosLoading = (state) => state.todos.isLoading;
