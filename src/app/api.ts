@@ -1,21 +1,19 @@
 import axios from "axios";
 import { BASE_URL } from "./constants";
-import { IToDoItem } from "./interfaces/to-do-item.interface";
 
-const URL = `${BASE_URL}/todos`;
+const URL = `${BASE_URL}/api/v1`;
 
-export const getTodos = async () => {
-  return axios.get(URL);
+export const signIn = (email: string, password: string) => {
+  return axios.post(`${URL}/auth`, {
+    email,
+    password,
+  });
 };
 
-export const addTodos = async (todo: IToDoItem) => {
-  return axios.post(URL, todo);
+export const signUp = (data) => {
+  return axios.post(`${URL}/users`, data);
 };
 
-export const toggleTodo = (id: string, checked: boolean) => {
-  return axios.patch(`${URL}/${id}`, { checked });
-};
-
-export const removeTodo = (id: string) => {
-  return axios.delete(`${URL}/${id}`);
+export const getUser = () => {
+  return axios.get(`${URL}/users`);
 };

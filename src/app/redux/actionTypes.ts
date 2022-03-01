@@ -1,11 +1,6 @@
 import { createActionType } from "./utils/createActionType";
 
-export const TOGGLE_TODO = createActionType("TOGGLE_TODO");
-export const REMOVE_TODO = createActionType("REMOVE_TODO");
-export const ADD_TODO = createActionType("ADD_TODO");
-export const GET_TODOS = createActionType("GET_TODOS");
-
-export const REMOVE_ERROR = "REMOVE_ERROR";
-
-export const HIDE_CONTENT = "HIDE_CONTENT";
-export const SHOW_CONTENT = "SHOw_CONTENT";
+export const SIGN_IN = createActionType("SIGN_IN");
+export const SIGN_UP = createActionType("SIGN_UP");
+export const GET_USER = createActionType("GET_USER");
+export const SIGN_OUT = "SIGN_OUT";

@@ -1,10 +1,24 @@
 import { combineReducers } from "redux";
-import todosReducer from "./redux/todos/todos.reducer";
-import filtersReducer from "./redux/filters/filters.reducer";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import authReducer from "./redux/auth/auth.reducer";
+
+const persistConfig = {
+  key: "root",
+  storage,
+  blacklist: [],
+  whitelist: ["auth"],
+};
+
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["token"],
+};
 
 const rootReducer = combineReducers({
-  todos: todosReducer,
-  filters: filtersReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
 });
 
-export default rootReducer;
+export default persistReducer(persistConfig, rootReducer);
